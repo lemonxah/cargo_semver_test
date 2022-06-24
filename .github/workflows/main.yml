@@ -28,7 +28,10 @@ jobs:
         # You may pin to the exact commit or the version.
         # uses: lemonxah/cargo_semver_update@3a56fc1dfb9e12127ff3395ba8456a6c304d8cad
         uses: lemonxah/cargo_semver_update@v0.0.5
-
+      
+      - name: Security work arround
+        run: git config --global --add safe.directory /github/workspace
+      
       - name: Commit and Push Branch
         # You may pin to the exact commit or the version.
         # uses: dsayling/commit-branch-check-action@bf76e20ce664016307431ce48b360f05ba7ae1ed
