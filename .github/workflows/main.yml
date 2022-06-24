@@ -20,8 +20,36 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Cargo Semver Update and Tag
-        uses: lemonxah/cargo_semver_update_and_tag@v0.0.9
+      - name: Checkout
+        uses: actions/checkout@v2.4.2
+      - name: Cargo Semver Update
+        id: update
+        # You may pin to the exact commit or the version.
+        # uses: lemonxah/cargo_semver_update@3a56fc1dfb9e12127ff3395ba8456a6c304d8cad
+        uses: lemonxah/cargo_semver_update@v0.0.5
+      - name: Verified commit
+        id: commit
+        # You may pin to the exact commit or the version.
+        # uses: swinton/commit@bfa68d879ec57187f2c5bf616158433763f05f06
+        uses: swinton/commit@v2.0.0
         with:
-          GITHUB_TOKEN: ${{ github.token }}
-          GITHUB_REF: ${{ github.ref }}
+          files: |
+            Cargo.toml
+          commit-message: "Updated semver version in Cargo.toml to ${{ steps.update.outputs.new_version }}"
+      - name: Git Push Action
+        # You may pin to the exact commit or the version.
+        # uses: x-actions/git-push@ba04e59cd92b579c1df53fa8d398bec56f310906
+        uses: x-actions/git-push@v1.0
+        with:
+          # git user email
+          GITHUB_EMAIL: "lemon.xah@gmail.com"
+          # git use username
+          GITHUB_USERNAME: "lemonxah"
+      - name: Commit tagger
+        # You may pin to the exact commit or the version.
+        # uses: tvdias/github-tagger@ed7350546e3e503b5e942dffd65bc8751a95e49d
+        uses: tvdias/github-tagger@v0.0.2
+        with:
+          tag: ${{ steps.update.outputs.new_version_with_v }}
+          commit-sha: ${{ steps.commit.outputs.commit-sha }}
+          
