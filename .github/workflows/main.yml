@@ -29,5 +29,6 @@ jobs:
       - name: Commit tagger
         uses: tvdias/github-tagger@v0.0.2
         with:
+          repo-token: ${{ github.token }}
           tag: ${{ steps.update.outputs.new_version_with_v }}
           
